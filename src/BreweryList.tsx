@@ -7,13 +7,20 @@ const url = (region: string) =>
     .toLowerCase()
     .replace(' ', '_')}`;
 
-export default function BreweryList(props: { region: string }) {
+interface Props {
+  region: string;
+  setLoading: (loading: boolean) => void;
+}
+
+export default function BreweryList(props: Props) {
   const [breweries, setBreweries] = useState([]);
 
   useEffect(() => {
+    props.setLoading(true);
     async function fetchBreweries(st: string) {
       axios.get(url(st)).then(res => {
         setBreweries(res.data);
+        props.setLoading(false);
       });
     }
 
